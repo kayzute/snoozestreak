@@ -1,4 +1,4 @@
-import React from 'react';
+import SnoozeStreak from './assets/logo.png'
 import './Navbar.css';
 
 const Navbar = () => {
@@ -7,7 +7,7 @@ const Navbar = () => {
 <nav className="navbar">
     <div className="navbar-left">
         <a href="/" className="logo">
-            SnoozeStreak
+            <img src={SnoozeStreak} alt="SnoozeStreak Logo" className="logo-img"/>
         </a>
     </div>
     <div className="navbar-center">
