@@ -13,13 +13,16 @@ const Navbar = () => {
     <div className="navbar-center">
         <ul className="nav-links">
             <li>
-                <a href="/activity-log">Activity Log</a>
+                <a href="/">Landing</a>
+            </li>
+            <li>
+                <a href="/Dashboard">Dashboard</a>
+            </li>
+            <li>
+                <a href="/log-activity">Log Activity</a>
             </li>
             <li>
                 <a href="/log-history">Log History</a>
-            </li>
-            <li>
-                <a href="/more-info">Info</a>
             </li>
         </ul>
     </div>
