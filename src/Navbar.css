@@ -6,7 +6,8 @@
   color: #fff;
   padding: 1rem;
   height: 85px;
-  width: 1080px;
+  width: 100%;
+  z-index: 1000;
 }
 
 .navbar-left .logo {

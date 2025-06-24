@@ -7,7 +7,6 @@ import LogActivity from './pages/LogActivity.jsx'
 import LogHistory from './pages/LogHistory.jsx'
 import Settings from './pages/Settings.jsx'
 
-
 import './App.css'
 
 function App() {
@@ -15,7 +14,7 @@ function App() {
 
   return (
     <>
-      <Navbar />
+    <Navbar />
     <div>
       <hr />
       <Routes>
