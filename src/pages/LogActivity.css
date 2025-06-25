@@ -1,6 +1,7 @@
 .log-activity {
-    position: relative;
+    position: sticky;
     min-height: 100vh;
+    
 }
 
 .log-activity select,
@@ -9,6 +10,7 @@
 .log-activity h1 {
     position: relative;
     z-index: 10;
+    top: 100px; 
 }
 
 .rectangle {
