@@ -1,4 +1,4 @@
-import SnoozeStreak from './assets/logo.png'
+import SnoozeStreak from '../assets/logo.png'
 import './Navbar.css';
 
 const Navbar = () => {

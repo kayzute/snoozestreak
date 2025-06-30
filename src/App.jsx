@@ -1,5 +1,5 @@
 import { useState } from 'react'
-import Navbar from './Navbar.jsx';
+import Navbar from './components/Navbar.jsx';
 import { Routes, Route, Link} from 'react-router-dom'
 import Landing from './pages/Landing.jsx'
 import Dashboard from './pages/Dashboard.jsx'
