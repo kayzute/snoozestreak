@@ -4,23 +4,48 @@
   align-items: center;
   background-color: #333;
   color: #fff;
-  padding: 1rem;
+  padding: 0.75rem 2rem;
   height: 85px;
-  width: 100%;
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1000;
+  box-sizing: border-box;
+}
+
+.navbar-left {
+  flex: 1;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  padding: 0.25rem 0;
 }
 
 .navbar-left .logo {
   font-size: 1.5rem;
   font-weight: bold;
-  margin-right: 4.5rem;
   color: #fff;
   text-decoration: none;
+  display: flex;
+  align-items: center;
 }
 
 .navbar-left .logo-img {
-  height: 80px;
+  height: 60px;
   display: block;
+  margin: 0.25rem 0;
+  transition: transform 0.3s ease;
+}
+
+.navbar-left .logo:hover .logo-img {
+  transform: scale(1.05);
+}
+
+.navbar-center {
+  flex: 2;
+  display: flex;
+  justify-content: center;
 }
 
 .navbar-center .nav-links {
@@ -28,26 +53,42 @@
   display: flex;
   margin: 0;
   padding: 0;
+  gap: 2rem;
+  justify-content: center;
 }
 
 .navbar-center .nav-links li {
-  margin-right: 1rem;
+  margin: 0;
 }
 
 .navbar-center .nav-links a {
   color: #fff;
   text-decoration: none;
+  font-size: 1.1rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-center .nav-links a:hover {
+  color: #646cff;
 }
 
 .navbar-right {
+  flex: 1;
   display: flex;
+  justify-content: flex-end;
   align-items: center;
+  gap: 1rem;
 }
 
 .navbar-right .menu-icon,
 .navbar-right .gear-icon {
   color: #fff;
   text-decoration: none;
-  margin-left: 1rem;
-  position: relative;
+  font-size: 1.2rem;
+  transition: color 0.3s ease;
+}
+
+.navbar-right .menu-icon:hover,
+.navbar-right .gear-icon:hover {
+  color: #646cff;
 }
