@@ -1,7 +1,10 @@
 .log-history {
-    position: sticky;
+    position: relative;
     min-height: 100vh;
-    
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
 }
 
 .log-history select,
@@ -10,33 +13,59 @@
 .log-history h1 {
     position: relative;
     z-index: 10;
-    top: 100px; 
+    margin-top: 100px;
+}
+
+.content-container {
+    position: relative;
+    z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    width: 500px;
+    padding: 40px;
+    color: white;
+}
+
+.background-layer {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 0;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .rectangle {
-    top: 150px;
     position: absolute;
     flex-shrink: 0;
     border-radius: 30px;
     z-index: 1;
+    left: 50%;
+    top: 50%;
 }
 
 .rectangle.blue {
-    transform: rotate(-90deg);
+    transform: translate(-50%, -50%) rotate(-90deg);
     background: #3538DB;
     width: 600px;
     height: 400px;
 }
 
 .rectangle.magenta {
-    transform: rotate(-96.67deg);
-    background:  #8E35DB;
+    transform: translate(-50%, -50%) rotate(-96.67deg);
+    background: #8E35DB;
     width: 600px;
     height: 400px;
 }
 
 .rectangle.purple {
-    transform: rotate(101.74deg);
+    transform: translate(-50%, -50%) rotate(101.74deg);
     background: #530892;
     width: 600px;
     height: 400px;

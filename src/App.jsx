@@ -13,18 +13,17 @@ function App() {
   const [count, setCount] = useState(0)
 
   return (
-    <>
-    <Navbar />
-    <div>
-      <hr />
-      <Routes>
-        <Route path="/" element={<Landing />} />
-        <Route path="Dashboard" element={<Dashboard />} />
-        <Route path="log-activity" element={<LogActivity />} />
-        <Route path="log-history" element={<LogHistory />} />
-      </Routes>
+    <div className="app-container">
+      <Navbar />
+      <div className="main-content" style={{ marginTop: '85px' }}>
+        <Routes>
+          <Route path="/" element={<Landing />} />
+          <Route path="Dashboard" element={<Dashboard />} />
+          <Route path="log-activity" element={<LogActivity />} />
+          <Route path="log-history" element={<LogHistory />} />
+        </Routes>
+      </div>
     </div>
-    </>
   )
 }
 
