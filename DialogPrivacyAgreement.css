@@ -1,0 +1,47 @@
+.privacy-dialog-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100vw;
+    height: 100vh;
+    background: rgba(200, 180, 255, 0.4);
+    display: flex; 
+    justify-content: center;
+    align-items: center;
+    z-index: 1000;
+}
+
+.privacy-dialog-box {
+    background-color: lavender;
+    padding: 2rem;
+    border-radius: 12px;
+    box-shadow: 0 6px 12px rgba(0 , 0 , 0, 0.2);
+    width: 80%;
+    max-width: 500px;
+}
+
+.privacy-dialog-text {
+    font-size: 1rem;
+    color: #333;
+    line-height: 1.6;
+    margin-bottom: 1.5rem;
+}
+
+.privacy-dialog-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 1rem;
+}
+
+.privacy-dialog-button {
+    background-color: #b19cd9;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.privacy-dialog-button:hover {
+    background-color: #a084ca
+}
