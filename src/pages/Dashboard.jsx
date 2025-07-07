@@ -70,8 +70,8 @@ export default function Dashboard() {
 
   const widgets = [
     {
-      to: '/activity-log',
-      title: 'Activity Log',
+      to: '/log-activity',
+      title: 'Log Activity',
       summary: '5 workouts logged this week',
     },
     {

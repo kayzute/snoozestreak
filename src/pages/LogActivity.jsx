@@ -7,13 +7,14 @@ import ReactDatePicker from '../components/TimePicker';
 export default function LogActivity() {
   const [selectedOption, setSelectedOption] = useState('');
   const [hours, setHours] = useState('');
-  const needsHoursInput = ['sleep_wokeup', 'sleep_bed', 'nap', 'exercise'].includes(selectedOption);
+  const needsHoursInput = ['sleep_wokeup', 'nap'].includes(selectedOption);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
+// Back end console log
   const handleSubmit = () => {
     console.log("Submit button clicked!");
     console.log("Selected Option:", selectedOption);
@@ -43,11 +44,11 @@ export default function LogActivity() {
           <option value="consume_alcohol">Consumed alcohol</option>
         </select>
 
-        <p>Selected: {selectedOption}</p>
+        {/* <p>Selected: {selectedOption}</p> */}
 
         {needsHoursInput && (
           <div>
-            <label htmlFor="hours">Enter hours:</label>
+            <label htmlFor="hours">Enter hours slept: </label>
             <input
               type="number"
               id="hours"
@@ -56,6 +57,7 @@ export default function LogActivity() {
               value={hours}
               onChange={(e) => setHours(e.target.value)}
               placeholder="e.g. 1.5"
+              style={{ backgroundColor: 'white', color: 'black' }}
             />
           </div>
         )}
