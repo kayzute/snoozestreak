@@ -1,9 +1,8 @@
-// Dashboard.jsx
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
 
-// --- Helpers for the timers ---
+// format for time
 function formatDuration(ms) {
   if (ms <= 0) return '00:00:00';
   let totalSec = Math.floor(ms / 1000);
@@ -23,9 +22,9 @@ function getNextBedtime(timeStr) {
   return bt;
 }
 
-// --- DailyTimers Component ---
+//bedtime can be altered later to add user input, maybe included in survey
+//and customizable in settings?
 function DailyTimers({ bedtime = '23:00' }) {
-  // define your goals + cutoff hours
   const goals = [
     { label: 'No caffeine',        hours: 10 },
     { label: 'No eating/drinking', hours: 3  },
@@ -60,8 +59,8 @@ function DailyTimers({ bedtime = '23:00' }) {
   );
 }
 
-// --- Main Dashboard ---
 export default function Dashboard() {
+  //daily goals change based on survey
   const dailyGoals = [
     'Exercise 1 Hour',
     'Meditate 10 Minutes',
@@ -88,7 +87,6 @@ export default function Dashboard() {
 
   return (
     <main className="dashboard">
-      {/* Daily Goals */}
       <section className="daily-goals">
         <h2 className="section-title">Daily Goals</h2>
         <div className="goals-grid">
@@ -98,10 +96,10 @@ export default function Dashboard() {
         </div>
       </section>
 
-      {/* Timers */}
+      {/* timers */}
       <DailyTimers bedtime="23:00" />
 
-      {/* Widgets */}
+      {/* widgets */}
       <section className="widgets-grid">
         {widgets.map(({ to, title, summary }, i) => (
           <Link key={i} to={to} className="widget-card">

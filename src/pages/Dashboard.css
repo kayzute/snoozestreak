@@ -1,7 +1,7 @@
 :root {
   --bg-start:    hsl(251, 100%, 12%);   
   --bg-end:      rgb(143, 45, 110);    
-  --text-light:  #f2f2f2;    /* off-white */
+  --text-light:  #f2f2f2;  
   --pill-bg:     rgba(255,255,255,0.1);
   --pill-hover:  rgba(255,255,255,1);
   --accent-grad: linear-gradient(135deg, #6359FF, #4f46e5);
@@ -16,14 +16,13 @@ body {
 }
 
 .dashboard {
-  min-height: calc(100vh - 64px);        /* sits beneath your fixed header */
   background: linear-gradient(to bottom, var(--bg-start), var(--bg-end));
   padding: 2rem 1rem;
   max-width: 1024px;
   margin: 0 auto;
 }
 
-/* Section Title */
+
 .section-title {
   font-size: 1.8rem;
   margin-bottom: 1rem;
@@ -31,7 +30,6 @@ body {
   color: var(--text-light);
 }
 
-/* daily goals */
 .daily-goals {
   margin-bottom: 2rem;
 }
