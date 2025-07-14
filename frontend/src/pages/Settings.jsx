@@ -3,12 +3,11 @@ export default function Settings() {
 }
 import React, { useState } from 'react';
 import DialogResetPassword from './DialogResetPassword';
-import DialogChangeEmail from './DialogChangeEmail';
-import DialogDeleteAccount from './DialogPrivacy';
-import DialogExportHistory from './DialogExportHistory';
-import DialogExportHistory from './DialogExportHistory';
-import DialogPrivacy from './DialogPrivacy';
-import DialogChangeTheme from './DialogChangeTheme';
+// import DialogChangeEmail from './DialogChangeEmail';
+// import DialogDeleteAccount from './DialogPrivacy';
+// import DialogExportHistory from './DialogExportHistory';
+// import DialogPrivacy from './DialogPrivacy';
+// import DialogChangeTheme from './DialogChangeTheme';
 
 function setting () {
   const [openDialog, setOpenDialog] = useState ('');
