@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import './Dashboard.css';
+// git test
 
 // format for time
 function formatDuration(ms) {
@@ -22,8 +23,8 @@ function getNextBedtime(timeStr) {
   return bt;
 }
 
-//bedtime can be altered later to add user input, maybe included in survey
-//and customizable in settings?
+// bedtime can be altered later to add user input, maybe included in survey
+// and customizable in settings?
 function DailyTimers({ bedtime = '23:00' }) {
   const goals = [
     { label: 'No caffeine',        hours: 10 },
@@ -60,7 +61,7 @@ function DailyTimers({ bedtime = '23:00' }) {
 }
 
 export default function Dashboard() {
-  //daily goals change based on survey
+  // daily goals change based on survey
   const dailyGoals = [
     'Exercise 1 Hour',
     'Meditate 10 Minutes',
@@ -85,13 +86,82 @@ export default function Dashboard() {
     },
   ];
 
+  // month day year format
+  const todayStr = () => new Date().toISOString().split('T')[0];
+  const yesterdayStr = () => {
+    const d = new Date();
+    d.setDate(d.getDate() - 1);
+    return d.toISOString().split('T')[0];
+  };
+
+  // load checked state from localStorage
+  const [checkedGoals, setCheckedGoals] = useState(() => {
+    const saved = JSON.parse(localStorage.getItem('checkedGoals') || '{}');
+    if (saved.date === todayStr() && Array.isArray(saved.checked)) {
+      return saved.checked;
+    }
+    return Array(dailyGoals.length).fill(false);
+  });
+
+  // load streak and last-counted-date
+  const [streak, setStreak] = useState(() => {
+    const saved = JSON.parse(localStorage.getItem('streakData') || '{}');
+    return saved.streak || 0;
+  });
+  const [lastCountedDate, setLastCountedDate] = useState(() => {
+    const saved = JSON.parse(localStorage.getItem('streakData') || '{}');
+    return saved.lastDate || null;
+  });
+
+  
+  useEffect(() => {
+    // checked state to today's date
+    localStorage.setItem(
+      'checkedGoals',
+      JSON.stringify({ date: todayStr(), checked: checkedGoals })
+    );
+
+    // if all goals are checked and today has not been counted, update
+    if (checkedGoals.every(Boolean) && lastCountedDate !== todayStr()) {
+      let newStreak = 1;
+      if (lastCountedDate === yesterdayStr()) {
+        newStreak = streak + 1;
+      }
+      setStreak(newStreak);
+      setLastCountedDate(todayStr());
+      localStorage.setItem(
+        'streakData',
+        JSON.stringify({ streak: newStreak, lastDate: todayStr() })
+      );
+    }
+  }, [checkedGoals, lastCountedDate, streak]);
+
+  // toggle one goal
+  const toggleGoal = (i) => {
+    setCheckedGoals((prev) =>
+      prev.map((c, idx) => (idx === i ? !c : c))
+    );
+  };
+
   return (
     <main className="dashboard">
       <section className="daily-goals">
         <h2 className="section-title">Daily Goals</h2>
+
+        {/*streaks */}
+        <div className="streak-counter">
+          🔥 Daily Streak: <strong>{streak}</strong>
+        </div>
+
         <div className="goals-grid">
           {dailyGoals.map((goal, i) => (
-            <span key={i} className="goal-pill">{goal}</span>
+            <span
+              key={i}
+              className={`goal-pill ${checkedGoals[i] ? 'completed' : ''}`}
+              onClick={() => toggleGoal(i)}
+            >
+              {goal}
+            </span>
           ))}
         </div>
       </section>
@@ -111,3 +181,4 @@ export default function Dashboard() {
     </main>
   );
 }
+
