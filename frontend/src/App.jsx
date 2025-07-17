@@ -56,17 +56,13 @@ function App() {
           <Route 
             path="/log-activity" 
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <LogActivity />
-              </ProtectedRoute>
+              <LogActivity />
             } 
           />
           <Route 
             path="/log-history" 
             element={
-              <ProtectedRoute isAuthenticated={isAuthenticated}>
-                <LogHistory />
-              </ProtectedRoute>
+              <LogHistory />
             } 
           />
           <Route 

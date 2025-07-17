@@ -6,20 +6,64 @@ import ReactDatePicker from '../components/TimePicker';
 
 export default function LogActivity() {
   const [selectedOption, setSelectedOption] = useState('');
-  const [hours, setHours] = useState('');
-  const needsHoursInput = ['sleep_wokeup', 'nap'].includes(selectedOption);
+  const [hours, setHours] = useState('')  ;
+  const needsHoursInput = ['sleep_wokeup', 'nap', 'exercise'].includes(selectedOption);
   const [selectedDate, setSelectedDate] = useState(null);
 
   const handleChange = (event) => {
     setSelectedOption(event.target.value);
   };
 
+  const API_URL = "https://x6bj965173.execute-api.us-east-1.amazonaws.com";
+
 // Back end console log
-  const handleSubmit = () => {
+  const handleSubmit = async () => {
     console.log("Submit button clicked!");
     console.log("Selected Option:", selectedOption);
     console.log("Selected Date:", selectedDate);
-    alert("Activity has been logged");
+    console.log("Inputted Hours:", hours);
+
+    if (needsHoursInput && (isNaN(hours) || parseFloat(hours) <= 0)) {
+    alert("Please enter a valid number of hours.");
+    return;
+  }
+
+  if (selectedDate > new Date()) {
+  alert("Date cannot be in the future.");
+  return;
+  }
+
+    const payload = {
+      userid: "first_user123",
+      event: selectedOption,
+      timestamp: selectedDate.toISOString(),
+      hours: needsHoursInput ? parseFloat(hours) : 0
+    };
+
+    try {
+      const response = await fetch(API_URL + "/log", {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(payload)
+      });
+
+    if (!response.ok) {
+      throw new Error(`Server error: ${response.status}`);
+    }
+
+    const data = await response.json();
+    console.log("Server response:", data);
+    alert("Activity has been logged successfully!");
+
+    setSelectedOption('');
+    setHours('');
+    setSelectedDate(null);
+  } catch (error) {
+    console.error("Error submitting activity:", error);
+    alert("Failed to log activity. Please try again.");
+  }
   };
 
   return (
