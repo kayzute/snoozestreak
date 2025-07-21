@@ -1,15 +1,12 @@
-export default function Settings() {
-  return <h1>Settings</h1>;
-}
 import React, { useState } from 'react';
-import DialogResetPassword from './DialogResetPassword';
+// import DialogResetPassword from './DialogResetPassword';
 // import DialogChangeEmail from './DialogChangeEmail';
 // import DialogDeleteAccount from './DialogPrivacy';
 // import DialogExportHistory from './DialogExportHistory';
 // import DialogPrivacy from './DialogPrivacy';
-// import DialogChangeTheme from './DialogChangeTheme';
+import DialogChangeTheme from './DialogChangeTheme';
 
-function setting () {
+export default function Settings () { 
   const [openDialog, setOpenDialog] = useState ('');
   
   const open = (name) => setOpenDialog(name);
@@ -29,7 +26,7 @@ function setting () {
     {openDialog === 'reset' && <DialogResetPassword onClose={close} />}
     {openDialog === 'email'&& <DialogChangeEmail onClose={close} />}
     {openDialog === 'delete' && <DialogDeleteAccount onClose={close} />}
-    {openDialog === 'export' && <DialogExportHIstory onClose={close} />}
+    {openDialog === 'export' && <DialogExportHistory onClose={close} />}
     {openDialog === 'privacy' && <DialogPrivacy onClose={close} />}
     {openDialog === 'theme' && <DialogChangeTheme onClose={close} />}
     
