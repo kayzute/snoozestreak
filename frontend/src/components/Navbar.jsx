@@ -24,6 +24,9 @@ const Navbar = () => {
             <li>
                 <a href="/log-history">Log History</a>
             </li>
+            <li>
+                <a href="/achievements">Achievements</a>
+            </li>
         </ul>
     </div>
     <div className="navbar-right">

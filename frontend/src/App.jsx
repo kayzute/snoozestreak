@@ -10,6 +10,7 @@ import SignIn from './pages/SignIn.jsx';
 import SignUp from './pages/SignUp.jsx';
 import ForgotPassword from './pages/ForgotPassword.jsx';
 import Survey from './pages/Survey.jsx';
+import Achievements from './pages/Achievements.jsx';
 import './App.css';
 
 // Protected Route component
@@ -77,6 +78,12 @@ function App() {
               <ProtectedRoute isAuthenticated={isAuthenticated}>
                 <Survey />
               </ProtectedRoute>
+            } 
+          />
+          <Route 
+            path="/achievements" 
+            element={
+              <Achievements />
             } 
           />
         </Routes>

@@ -99,28 +99,28 @@
 
 .action-controls {
     position: relative;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 10px;
-  margin-top: 20px;
-  margin-bottom: 90px;
-  min-height: 60px;
-  z-index: 10;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    margin-top: 20px;
+    margin-bottom: 90px;
+    min-height: 60px;
+    z-index: 10;
 }
 
 .bulk-actions,
 .pagination-controls {
-  display: flex;
-  gap: 4px;
-  flex-wrap: wrap;
-  justify-content: center;
+    display: flex;
+    gap: 4px;
+    flex-wrap: wrap;
+    justify-content: center;
 }
 
 .page-info {
-  align-self: center;
-  font-weight: bold;
-  color: white;
+    align-self: center;
+    font-weight: bold;
+    color: white;
 }
 
 .bulk-btn.del {
@@ -134,20 +134,20 @@
 }
 
 .bulk-btn.light:hover:not(:disabled) {
-  background-color: #e0e0e0;
+    background-color: #e0e0e0;
 }
 
 .bulk-btn.delete-btn {
-  background-color: #e53935;
-  color: white;
-  border: none;
-  padding: 6px 12px;
-  border-radius: 8px;
-  font-weight: 600;
-  cursor: pointer;
+    background-color: #e53935;
+    color: white;
+    border: none;
+    padding: 6px 12px;
+    border-radius: 8px;
+    font-weight: 600;
+    cursor: pointer;
 }
 
 .bulk-btn.delete-btn:disabled {
-  background-color: #ccc;
-  cursor: not-allowed;
+    background-color: #ccc;
+    cursor: not-allowed;
 }
