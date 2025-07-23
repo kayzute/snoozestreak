@@ -17,6 +17,7 @@
 }
 
 .content-container {
+    min-height: 400px;
     position: relative;
     z-index: 10;
     display: flex;
@@ -94,4 +95,59 @@
     color: black;
     cursor: pointer;
     font-size: 12px;
+}
+
+.action-controls {
+    position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  margin-top: 20px;
+  margin-bottom: 90px;
+  min-height: 60px;
+  z-index: 10;
+}
+
+.bulk-actions,
+.pagination-controls {
+  display: flex;
+  gap: 4px;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+
+.page-info {
+  align-self: center;
+  font-weight: bold;
+  color: white;
+}
+
+.bulk-btn.del {
+    padding: 10px 30px;
+    border-radius: 200px;
+    border: 2px solid #140B92;
+    background: #B787E0;
+    color: black;
+    cursor: pointer;
+    font-size: 12px;
+}
+
+.bulk-btn.light:hover:not(:disabled) {
+  background-color: #e0e0e0;
+}
+
+.bulk-btn.delete-btn {
+  background-color: #e53935;
+  color: white;
+  border: none;
+  padding: 6px 12px;
+  border-radius: 8px;
+  font-weight: 600;
+  cursor: pointer;
+}
+
+.bulk-btn.delete-btn:disabled {
+  background-color: #ccc;
+  cursor: not-allowed;
 }

@@ -8,6 +8,7 @@ export default function LogHistory() {
   const [hasNextPage, setHasNextPage] = useState(false);
   const [loading, setLoading] = useState(false);
   const API_URL = "https://x6bj965173.execute-api.us-east-1.amazonaws.com";
+  const [selectedLogs, setSelectedLogs] = useState([]);
 
   const fetchLogs = async (pageNum, startKey = null) => {
     setLoading(true);
@@ -61,6 +62,63 @@ export default function LogHistory() {
     fetchLogs(1, null);
   };
 
+  const selectAllOnPage = () => {
+    setSelectedLogs(logs.map(({ userid, timestamp }) => ({ userid, timestamp })));
+  };
+
+  const clearSelection = () => {
+    setSelectedLogs([]);
+  };
+
+  const toggleLogSelection = (log) => {
+    setSelectedLogs((prev) => {
+      const exists = prev.find(
+        (item) => item.timestamp === log.timestamp && item.userid === log.userid
+      );
+      if (exists) {
+        return prev.filter(
+          (item) => !(item.timestamp === log.timestamp && item.userid === log.userid)
+        );
+      } else {
+        return [...prev, { userid: log.userid, timestamp: log.timestamp }];
+      }
+    });
+  };
+
+  const deleteSelectedLogs = async () => {
+    if (selectedLogs.length === 0) return;
+    if (!window.confirm(`Delete ${selectedLogs.length} selected log(s)?`)) return;
+
+    setLoading(true);
+
+    try {
+      for (const { userid, timestamp } of selectedLogs) {
+        await fetch(`${API_URL}/log`, {
+          method: 'DELETE',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ userid, timestamp })
+        });
+      }
+
+      // Remove from UI
+      setLogs((prevLogs) =>
+        prevLogs.filter(
+          (log) =>
+            !selectedLogs.some(
+              (sel) => sel.timestamp === log.timestamp && sel.userid === log.userid
+            )
+        )
+      );
+
+      setSelectedLogs([]);
+    } catch (error) {
+      console.error("Error deleting selected logs:", error);
+      alert("Some deletions may have failed.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
   useEffect(() => {
     fetchLogs(1, null);
   }, []);
@@ -93,33 +151,71 @@ export default function LogHistory() {
             <div className="loading">Loading...</div>
           ) : (
             <ul className="log-list">
-              {logs.map((log, index) => {
-                const date = new Date(log.timestamp);
-                const shortDate = date.toLocaleDateString(undefined, {
-                  year: '2-digit',
-                  month: 'numeric',
-                  day: 'numeric',
-                });
-                const shortTime = date.toLocaleTimeString(undefined, {
-                  hour: 'numeric',
-                  minute: '2-digit',
-                });
+              {logs.length > 0 ? (
+                logs.map((log, index) => {
+                  const date = new Date(log.timestamp);
+                  const shortDate = date.toLocaleDateString(undefined, {
+                    year: '2-digit',
+                    month: 'numeric',
+                    day: 'numeric',
+                  });
+                  const shortTime = date.toLocaleTimeString(undefined, {
+                    hour: 'numeric',
+                    minute: '2-digit',
+                  });
 
-                const phrase = eventPhrases[log.event] || 
-                  log.event.charAt(0).toUpperCase() + log.event.slice(1);
+                  const phrase = eventPhrases[log.event] || 
+                    log.event.charAt(0).toUpperCase() + log.event.slice(1);
 
-                return (
-                  <li key={index} className="log-item">
-                    <strong>{shortDate}</strong> at <strong>{shortTime}</strong>: {phrase}
-                    {log.hours !== 0 && ` — ${log.hours} hrs`}
-                  </li>
-                );
-              })}
+                  return (
+                    <li key={index} className="log-item">
+                      <input
+                        type="checkbox"
+                        checked={selectedLogs.some(
+                          (item) => item.timestamp === log.timestamp && item.userid === log.userid
+                        )}
+                        onChange={() => toggleLogSelection(log)}
+                        style={{ marginRight: '8px' }}
+                      />
+                      <strong>{shortDate}</strong> at <strong>{shortTime}</strong>: {phrase}
+                      {log.hours !== 0 && ` — ${log.hours} hrs`}
+                    </li>
+                  );
+                })
+              ) : (
+                <li className="log-item">
+                  <p>No entries found for this page.</p>
+                </li>
+              )}
             </ul>
           )}
         </div>
 
-        <div className="pagination-container">
+        <div className="action-controls">
+          <div className="bulk-actions">
+            <button 
+              className="bulk-btn del" 
+              onClick={selectAllOnPage} 
+              disabled={loading || logs.length === 0}
+            >
+              Select All
+            </button>
+            <button 
+              className="bulk-btn del" 
+              onClick={clearSelection} 
+              disabled={loading}
+            >
+              Clear
+            </button>
+            <button
+              className="bulk-btn delete-btn"
+              onClick={deleteSelectedLogs}
+              disabled={loading || selectedLogs.length === 0}
+            >
+              Delete Selected ({selectedLogs.length})
+            </button>
+          </div>
+
           <div className="pagination-controls">
             <button 
               className="pagination-btn" 
@@ -128,7 +224,7 @@ export default function LogHistory() {
             >
               First
             </button>
-            
+
             <button 
               className="pagination-btn" 
               onClick={goToPreviousPage}
@@ -136,11 +232,11 @@ export default function LogHistory() {
             >
               Previous
             </button>
-            
+
             <span className="page-info">
               Page {currentPage} of {estimatedTotalPages}
             </span>
-            
+
             <button 
               className="pagination-btn" 
               onClick={goToNextPage}
