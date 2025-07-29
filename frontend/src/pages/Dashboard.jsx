@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
+import CircularProgress from '../components/CircularProgress';
 import './Dashboard.css';
 // git test
 
@@ -16,16 +17,62 @@ function formatDuration(ms) {
 
 function getNextBedtime(timeStr) {
   const [H, M] = timeStr.split(':').map(Number);
-  const now    = new Date();
-  const bt     = new Date(now);
+  const now = new Date();
+  const bt = new Date(now);
   bt.setHours(H, M, 0, 0);
-  if (bt <= now) bt.setDate(bt.getDate() + 1);
+  
+  // If bedtime is already past for today, set it to tomorrow
+  if (bt <= now) {
+    bt.setDate(bt.getDate() + 1);
+  }
   return bt;
 }
 
+const personalizedGoals = {
+  'Restless Relaxer': [
+    'Progressive Muscle Relaxation - 15 mins',
+    'No Screen Time 2hrs Before Bed',
+    'Evening Yoga Session - 20 mins'
+  ],
+  'Fragmented Sleeper': [
+    'Meditation Before Bed - 10 mins',
+    'No Afternoon Naps',
+    'Consistent Wake Time'
+  ],
+  'Sleep-Deprived Dreamer': [
+    'Earlier Bedtime - By 10PM',
+    'Morning Sunlight - 10 mins',
+    'No Late Caffeine'
+  ],
+  'Healthy Sleeper': [
+    'Exercise 1 Hour',
+    'Meditate 10 Minutes',
+    'Read 30 Pages'
+  ],
+  'Oversleeping Owl': [
+    'Morning Walk - 15 mins',
+    'Set Single Alarm',
+    'No Snooze Button'
+  ],
+  'default': [
+    'Exercise 1 Hour',
+    'Meditate 10 Minutes',
+    'Read 30 Pages'
+  ]
+};
+
+const sleepRoleDescriptions = {
+  'Restless Relaxer': 'Your mind tends to race at bedtime. These goals will help you wind down naturally and find your calm.',
+  'Fragmented Sleeper': 'You wake up during the night. These goals will help you maintain continuous, restorative sleep.',
+  'Sleep-Deprived Dreamer': 'You\'re getting less sleep than needed. These goals will help you reclaim your natural sleep rhythm.',
+  'Healthy Sleeper': 'You have good sleep habits. These goals will help you maintain and optimize your rest.',
+  'Oversleeping Owl': 'You tend to oversleep. These goals will help you wake up refreshed and energized.',
+  'default': 'Personalized goals to help you achieve better sleep quality.'
+};
+
 // bedtime can be altered later to add user input, maybe included in survey
 // and customizable in settings?
-function DailyTimers({ bedtime = '23:00' }) {
+function DailyTimers({ bedtime = '22:00' }) {  // Changed bedtime to 10 PM
   const goals = [
     { label: 'No caffeine',        hours: 10 },
     { label: 'No eating/drinking', hours: 3  },
@@ -33,20 +80,21 @@ function DailyTimers({ bedtime = '23:00' }) {
     { label: 'No screens',         hours: 1  },
   ];
 
-  const [now, setNow] = useState(Date.now());
-  const nextBed = getNextBedtime(bedtime);
+  // Set a fixed "current time" for demo purposes
+  const [now] = useState(() => {
+    const demoTime = new Date();
+    demoTime.setHours(17, 30, 0, 0); // Set to 5:30 PM
+    return demoTime.getTime();
+  });
 
-  useEffect(() => {
-    const id = setInterval(() => setNow(Date.now()), 1000);
-    return () => clearInterval(id);
-  }, []);
+  const nextBed = getNextBedtime(bedtime);
 
   return (
     <section className="daily-timers">
       <h2>Cut-off Timers</h2>
       <ul>
         {goals.map(({ label, hours }) => {
-          const cutoff    = nextBed.getTime() - hours * 3_600_000;
+          const cutoff = nextBed.getTime() - hours * 3_600_000;
           const remaining = cutoff - now;
           return (
             <li key={label}>
@@ -61,12 +109,9 @@ function DailyTimers({ bedtime = '23:00' }) {
 }
 
 export default function Dashboard() {
-  // daily goals change based on survey
-  const dailyGoals = [
-    'Exercise 1 Hour',
-    'Meditate 10 Minutes',
-    'Read 30 Pages',
-  ];
+  const [userRole] = useState('Fragmented Sleeper');
+  const roleDescription = sleepRoleDescriptions[userRole] || sleepRoleDescriptions.default;
+  const dailyGoals = personalizedGoals[userRole] || personalizedGoals.default;
 
   const widgets = [
     {
@@ -86,55 +131,58 @@ export default function Dashboard() {
     },
   ];
 
-  // month day year format
-  const todayStr = () => new Date().toISOString().split('T')[0];
-  const yesterdayStr = () => {
-    const d = new Date();
-    d.setDate(d.getDate() - 1);
-    return d.toISOString().split('T')[0];
-  };
-
-  // load checked state from localStorage
-  const [checkedGoals, setCheckedGoals] = useState(() => {
-    const saved = JSON.parse(localStorage.getItem('checkedGoals') || '{}');
-    if (saved.date === todayStr() && Array.isArray(saved.checked)) {
-      return saved.checked;
-    }
-    return Array(dailyGoals.length).fill(false);
+  // Initialize states
+  const [streak, setStreak] = useState(1);
+  const [checkedGoals, setCheckedGoals] = useState(() => Array(dailyGoals.length).fill(false));
+  const [completionHistory, setCompletionHistory] = useState(() => {
+    const today = new Date();
+    const history = {};
+    
+    // Add Wed 23
+    const wed23 = new Date(today);
+    wed23.setDate(23);
+    history[wed23.toISOString().split('T')[0]] = true;
+    
+    // Add Sun 27
+    const sun27 = new Date(today);
+    sun27.setDate(27);
+    history[sun27.toISOString().split('T')[0]] = true;
+    
+    return history;
   });
 
-  // load streak and last-counted-date
-  const [streak, setStreak] = useState(() => {
-    const saved = JSON.parse(localStorage.getItem('streakData') || '{}');
-    return saved.streak || 0;
-  });
-  const [lastCountedDate, setLastCountedDate] = useState(() => {
-    const saved = JSON.parse(localStorage.getItem('streakData') || '{}');
-    return saved.lastDate || null;
-  });
-
-  
+  // Update both streak and calendar when all goals are completed
   useEffect(() => {
-    // checked state to today's date
-    localStorage.setItem(
-      'checkedGoals',
-      JSON.stringify({ date: todayStr(), checked: checkedGoals })
-    );
+    if (checkedGoals.every(Boolean)) {
+      // Update streak
+      setStreak(2);
 
-    // if all goals are checked and today has not been counted, update
-    if (checkedGoals.every(Boolean) && lastCountedDate !== todayStr()) {
-      let newStreak = 1;
-      if (lastCountedDate === yesterdayStr()) {
-        newStreak = streak + 1;
-      }
-      setStreak(newStreak);
-      setLastCountedDate(todayStr());
-      localStorage.setItem(
-        'streakData',
-        JSON.stringify({ streak: newStreak, lastDate: todayStr() })
-      );
+      // Update calendar for Monday
+      const today = new Date();
+      const monday = new Date(today);
+      monday.setDate(28); // Set to Monday the 28th
+      const mondayStr = monday.toISOString().split('T')[0];
+      
+      setCompletionHistory(prev => ({
+        ...prev,
+        [mondayStr]: true
+      }));
+    } else {
+      // Reset streak and remove Monday's completion if not all goals are checked
+      setStreak(1);
+      
+      const today = new Date();
+      const monday = new Date(today);
+      monday.setDate(28);
+      const mondayStr = monday.toISOString().split('T')[0];
+      
+      setCompletionHistory(prev => {
+        const newHistory = { ...prev };
+        delete newHistory[mondayStr];
+        return newHistory;
+      });
     }
-  }, [checkedGoals, lastCountedDate, streak]);
+  }, [checkedGoals]);
 
   // toggle one goal
   const toggleGoal = (i) => {
@@ -143,31 +191,75 @@ export default function Dashboard() {
     );
   };
 
+  // Calculate progress percentage
+  const calculateProgress = () => {
+    const completedGoals = checkedGoals.filter(Boolean).length;
+    return (completedGoals / dailyGoals.length) * 100;
+  };
+
   return (
     <main className="dashboard">
       <section className="daily-goals">
-        <h2 className="section-title">Daily Goals</h2>
-
-        {/*streaks */}
-        <div className="streak-counter">
-          🔥 Daily Streak: <strong>{streak}</strong>
+        <div className="goals-box">
+          <h2 className="section-title">Daily Goals</h2>
+          <div className="role-indicator">
+            <span className="role-label">Your Sleep Personality:</span>
+            <span className="role-value" data-text={userRole}>The {userRole}</span>
+            <div className="role-description">
+              {roleDescription}
+            </div>
+          </div>
+          <div className="streak-counter" key={streak}>
+            <span className="fire-emoji">🔥</span> Daily Streak: <strong>{streak}</strong>
+          </div>
+          <div className="goals-container">
+            <div className="goals-grid">
+              {dailyGoals.map((goal, i) => (
+                <span
+                  key={i}
+                  className={`goal-pill ${checkedGoals[i] ? 'completed' : ''}`}
+                  onClick={() => toggleGoal(i)}
+                >
+                  {goal}
+                </span>
+              ))}
+            </div>
+          </div>
         </div>
+        <div className="progress-container">
+          <CircularProgress percentage={calculateProgress()} />
+        </div>
+      </section>
 
-        <div className="goals-grid">
-          {dailyGoals.map((goal, i) => (
-            <span
-              key={i}
-              className={`goal-pill ${checkedGoals[i] ? 'completed' : ''}`}
-              onClick={() => toggleGoal(i)}
-            >
-              {goal}
-            </span>
-          ))}
+      {/* Streak Calendar */}
+      <section className="streak-calendar">
+        <h2>Streak Calendar</h2>
+        <div className="calendar-grid">
+          {Array.from({ length: 7 }, (_, i) => {
+            const date = new Date();
+            date.setDate(date.getDate() - 6 + i);
+            const dateStr = date.toISOString().split('T')[0];
+            const isCompleted = completionHistory[dateStr];
+            const isToday = dateStr === new Date().toISOString().split('T')[0];
+            
+            return (
+              <div 
+                key={dateStr} 
+                className={`calendar-day ${isCompleted ? 'completed' : ''} ${isToday ? 'today' : ''}`}
+              >
+                <div className="day-label">
+                  {['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'][date.getDay()]}
+                </div>
+                <div className="date-number">{date.getDate()}</div>
+                {isCompleted && <span className="completion-indicator">✓</span>}
+              </div>
+            );
+          })}
         </div>
       </section>
 
       {/* timers */}
-      <DailyTimers bedtime="23:00" />
+      <DailyTimers bedtime="22:00" />
 
       {/* widgets */}
       <section className="widgets-grid">

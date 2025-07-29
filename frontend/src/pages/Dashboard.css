@@ -34,25 +34,90 @@ body {
 
 .daily-goals {
   margin-bottom: 2rem;
+  display: flex;
+  justify-content: space-between;
+  gap: 2rem;
+  width: 100%;
 }
+
+.goals-box {
+  flex: 0 0 calc(50% - 1rem);
+  padding: 1.25rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.goals-box:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.goals-box .section-title {
+  margin-top: 0;
+  font-size: 1.5rem;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+
+.goals-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
 .goals-grid {
-  display: inline-flex;
-  flex-wrap: wrap;
+  display: flex;
+  flex-direction: column;
   gap: 0.75rem;
-  justify-content: center;
+  width: 100%;
 }
+
+.progress-container {
+  flex: 0 0 calc(50% - 1rem);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  padding: 2rem;
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  backdrop-filter: blur(6px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.progress-container:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
+}
+
+.circular-progress {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  transform: scale(1.8);  /* Made progress bar even bigger to fill the space better */
+}
+
 .goal-pill {
   background: var(--pill-bg);
   padding: 0.5rem 1rem;
   border-radius: 999px;
   font-size: 0.95rem;
   cursor: pointer;
-  transition: background 0.2s;
+  transition: all 0.2s ease;
   color: var(--text-light);
+  text-align: center;
+  width: fit-content;
+  margin: 0 auto;
 }
+
 .goal-pill:hover {
-  background: var(----pill-bg);
-  color: var(--accent-grad)
+  background: rgba(255,255,255,0.2);
 }
 
 /* widgets */
@@ -101,6 +166,11 @@ body {
   border: 1px solid rgba(255,255,255,0.2);
   border-radius: 12px;
   backdrop-filter: blur(6px);
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.daily-timers:hover {
+  transform: scale(1.02);
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.2);
 }
 .daily-timers h2 {
   margin: 0 0 1rem;
@@ -131,11 +201,59 @@ body {
   color: #f2f2f2;
 }
 
+@keyframes shakeAndGrow {
+  0% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 0.5;
+  }
+  10% { 
+    transform: scale(1) rotate(0deg);
+    opacity: 1;
+  }
+  20% { 
+    transform: scale(1.1) rotate(-5deg);
+  }
+  30% { 
+    transform: scale(1.2) rotate(5deg);
+  }
+  40% { 
+    transform: scale(1.25) rotate(-5deg);
+  }
+  50% { 
+    transform: scale(1.3) rotate(5deg);
+  }
+  60% { 
+    transform: scale(1.3) rotate(-3deg);
+  }
+  70% { 
+    transform: scale(1.2) rotate(0deg);
+  }
+  85% { 
+    transform: scale(1.1) rotate(0deg);
+  }
+  100% { 
+    transform: scale(1) rotate(0deg);
+  }
+}
+
 .streak-counter {
   text-align: center;
-  margin-bottom: 0.5rem;
-  font-size: 1.1rem;
-  color: #4caf50; /* green text */
+  margin-bottom: 1.5rem;
+  font-size: 1.3rem;
+  color: #4caf50;
+  font-weight: 600;
+}
+
+.streak-counter strong {
+  font-size: 1.5rem;
+  font-weight: 700;
+  margin-left: 4px;
+}
+
+.streak-counter .fire-emoji {
+  display: inline-block;
+  font-size: 1.4rem;
+  margin-right: 4px;
 }
 
 
@@ -147,4 +265,124 @@ body {
 
 .goal-pill.completed:hover {
   opacity: 0.8;
+}
+
+.role-value {
+  font-weight: 600;
+  font-size: 1.5rem;
+  display: block;
+  margin: 0.7rem 0;
+  color: #8A84FF;
+  letter-spacing: 0.5px;
+}
+
+.role-indicator {
+  background: rgba(20, 20, 30, 0.4);
+  border-radius: 8px;
+  padding: 1.2rem;
+  margin-bottom: 1rem;
+  text-align: center;
+  backdrop-filter: blur(6px);
+  border: 1px solid rgba(255,255,255,0.2);
+}
+
+.role-label {
+  color: var(--text-light);
+  opacity: 0.8;
+  font-size: 0.9rem;
+  display: block;
+}
+
+.role-description {
+  color: var(--text-light);
+  font-size: 0.85rem;
+  opacity: 0.8;
+  line-height: 1.4;
+  margin-top: 0.7rem;
+  padding-top: 0.7rem;
+  border-top: 1px solid rgba(255,255,255,0.1);
+}
+
+.streak-calendar {
+  background: rgba(255,255,255,0.1);
+  border: 1px solid rgba(255,255,255,0.2);
+  border-radius: 12px;
+  padding: 1.25rem;
+  margin: 2rem 0;
+  backdrop-filter: blur(6px);
+}
+
+.streak-calendar h2 {
+  margin: 0 0 1rem;
+  text-align: center;
+  color: var(--text-light);
+  font-size: 1.5rem;
+}
+
+.calendar-grid {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 0.5rem;
+}
+
+.calendar-day {
+  background: rgba(255,255,255,0.05);
+  border: 1px solid rgba(255,255,255,0.1);
+  border-radius: 8px;
+  padding: 0.75rem;
+  text-align: center;
+  position: relative;
+  transition: all 0.2s ease;
+}
+
+.calendar-day:hover {
+  transform: translateY(-2px);
+  background: rgba(255,255,255,0.1);
+}
+
+.completion-indicator {
+  position: absolute;
+  top: 0.25rem;
+  right: 0.25rem;
+  color: #4caf50;
+  font-size: 1.1rem;
+  font-weight: bold;
+}
+
+.calendar-day.completed {
+  background: rgba(76, 175, 80, 0.3);
+  border-color: #4caf50;
+}
+
+.calendar-day.completed:hover {
+  background: rgba(76, 175, 80, 0.4);
+}
+
+.calendar-day.completed .day-label,
+.calendar-day.completed .date-number {
+  color: #fff;
+}
+
+.calendar-day.today {
+  border-color: rgba(255,255,255,0.4);
+  background: rgba(255,255,255,0.15);
+}
+
+.calendar-day.today.completed {
+  border-color: #4caf50;
+  background: rgba(76, 175, 80, 0.3);
+  box-shadow: 0 0 10px rgba(76, 175, 80, 0.2);
+}
+
+.day-label {
+  font-size: 0.8rem;
+  color: var(--text-light);
+  opacity: 0.8;
+  margin-bottom: 0.25rem;
+}
+
+.date-number {
+  font-size: 1.1rem;
+  font-weight: bold;
+  color: var(--text-light);
 }
