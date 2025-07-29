@@ -2,16 +2,19 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  background-color: #333;
+  background: rgba(20, 20, 30, 0.95);
+  backdrop-filter: blur(10px);
   color: #fff;
   padding: 0.75rem 2rem;
-  height: 85px;
+  height: 75px;
   position: fixed;
   top: 0;
   left: 0;
   right: 0;
   z-index: 1000;
   box-sizing: border-box;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
 }
 
 .navbar-left {
@@ -32,10 +35,11 @@
 }
 
 .navbar-left .logo-img {
-  height: 60px;
+  height: 50px;
   display: block;
   margin: 0.25rem 0;
   transition: transform 0.3s ease;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.2));
 }
 
 .navbar-left .logo:hover .logo-img {
@@ -53,23 +57,45 @@
   display: flex;
   margin: 0;
   padding: 0;
-  gap: 2rem;
+  gap: 2.5rem;
   justify-content: center;
 }
 
 .navbar-center .nav-links li {
   margin: 0;
+  position: relative;
 }
 
 .navbar-center .nav-links a {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
-  font-size: 1.1rem;
-  transition: color 0.3s ease;
+  font-size: 1rem;
+  font-weight: 500;
+  transition: all 0.3s ease;
+  padding: 0.5rem 0;
+  letter-spacing: 0.5px;
 }
 
 .navbar-center .nav-links a:hover {
-  color: #646cff;
+  color: #8A84FF;
+}
+
+.navbar-center .nav-links li::after {
+  content: '';
+  position: absolute;
+  width: 0;
+  height: 2px;
+  bottom: -4px;
+  left: 50%;
+  background: #8A84FF;
+  transition: all 0.3s ease;
+  transform: translateX(-50%);
+  opacity: 0;
+}
+
+.navbar-center .nav-links li:hover::after {
+  width: 100%;
+  opacity: 1;
 }
 
 .navbar-right {
@@ -77,18 +103,38 @@
   display: flex;
   justify-content: flex-end;
   align-items: center;
-  gap: 1rem;
+  gap: 1.5rem;
 }
 
 .navbar-right .menu-icon,
 .navbar-right .gear-icon {
-  color: #fff;
+  color: rgba(255, 255, 255, 0.8);
   text-decoration: none;
   font-size: 1.2rem;
-  transition: color 0.3s ease;
+  transition: all 0.3s ease;
+  padding: 0.5rem;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.1);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 35px;
+  height: 35px;
 }
 
 .navbar-right .menu-icon:hover,
 .navbar-right .gear-icon:hover {
-  color: #646cff;
+  color: #8A84FF;
+  background: rgba(138, 132, 255, 0.1);
+  transform: translateY(-2px);
+}
+
+/* Active link styles */
+.nav-links .active {
+  color: #8A84FF !important;
+}
+
+.nav-links .active::after {
+  width: 100% !important;
+  opacity: 1 !important;
 }

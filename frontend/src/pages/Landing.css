@@ -4,14 +4,16 @@
   box-sizing: border-box;
 }
 
-body {
-  overflow-x: hidden;
-  width: 100vw;
-  position: relative;
+html, body {
+  margin: 0;
+  padding: 0;
+  overflow: hidden;
+  height: 100%;
+  width: 100%;
 }
 
 .landing-container {
-  min-height: 100vh;
+  height: 100vh;
   width: 100vw;
   background: linear-gradient(180deg, #100325 32%, #2F3272 100%);
   display: flex;
@@ -20,12 +22,10 @@ body {
   justify-content: center;
   padding: 0 1rem;
   text-align: center;
-  position: relative;
-  overflow: hidden;
-  height: 100vh;
   position: fixed;
   top: 0;
   left: 0;
+  overflow: hidden;
 }
 
 .landing-content {
@@ -38,7 +38,8 @@ body {
   margin: 0 auto;
   position: relative;
   z-index: 3;
-  padding-bottom: 5vh;
+  padding: 0 2rem;
+  margin-top: -2rem;
 }
 
 .landing-title {
@@ -78,7 +79,6 @@ body {
   box-shadow: 0 0 0 rgba(100, 108, 255, 0);
 }
 
-/*hover over button efx*/
 .cta-button:hover {
   transform: scale(1.05);
   background: linear-gradient(135deg, #535bf2 0%, #646cff 100%);
@@ -87,7 +87,6 @@ body {
               0 0 20px rgba(255, 255, 255, 0.15);
 }
 
-/*moono efx */
 .landing-container:has(.cta-button:hover) .moon-image {
   transform: translate(-50%, -50%) scale(1.05);
   opacity: 0.4;
@@ -114,8 +113,8 @@ body {
 }
 
 @media (max-width: 768px) {
-  .landing-container {
-    padding-top: calc(85px + 3rem);
+  .landing-content {
+    padding-top: 85px;
   }
   
   .cta-button {
