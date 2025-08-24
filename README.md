@@ -25,7 +25,7 @@ Our team created a **three-tier web application** that allows users to:
 
 ### Tech Stack  
 - **Design:** Figma (UI/UX prototyping)  
-- **Frontend:** React  
+- **Frontend:** React + Vite
 - **Backend:** AWS Lambda, DynamoDB, API Gateway  
 - **Hosting:** AWS S3 (static website hosting)  
 
@@ -33,7 +33,7 @@ Our team created a **three-tier web application** that allows users to:
 
 ## Project Status  
 
-⚠️ **Note:** This project is not fully finished and was built for our own learning and development.  
+⚠️ **Note:** This project is not fully finished and was built for our own learning and development over an 8 week period in our free time.
 
 Despite that, we successfully presented our solution and **won 1st place** during the presentation to panelists at **The Cigna Group**.  
 
